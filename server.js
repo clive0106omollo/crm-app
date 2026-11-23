@@ -233,9 +233,19 @@ app.get('/files/:id', wrap(async (req, res) => {
 }));
 
 // Static site (the app itself)
-app.use(express.static(path.join(__dirname, 'public'), {
-  setHeaders(res, p) { if (/sw\.js$/.test(p)) res.set('Cache-Control', 'no-cache'); },
+app.use((req, res, next) => {
+  const blocked = ['/server.js', '/package.json', '/package-lock.json', '/yarn.lock', '/render.yaml', '/.gitignore'];
+  if (blocked.includes(req.path)) return res.status(404).send('Not found');
+  next();
+});
+
+app.use(express.static(__dirname, {
+  setHeaders(res, p) { if (/\.js$/.test(p)) res.set('Cache-Control', 'no-cache'); }
 }));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   console.error(err);
