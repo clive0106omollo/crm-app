@@ -1,0 +1,10 @@
+{
+  "name": "crm-healing-the-roots",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Christ Renewal Missions – Healing the Roots 2026 (installable web app)",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": { "express": "^4.19.2", "pg": "^8.11.5" }
+}
